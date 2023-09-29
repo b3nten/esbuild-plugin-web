@@ -24,8 +24,10 @@ export default function webPlugin(config: Config = {}): Plugin {
   const log = config.logLevel === "debug"
     ? new aLog("ESBUILD-WEB", aLog.LevelDebug)
     : new aLog("ESBUILD-WEB");
+
   const base = path.toFileUrl(slash(Deno.cwd() + "/"));
   log.debug("base:", base);
+
   let importMap: ImportMap | undefined;
   if (typeof config.importMap === "string") {
     const raw = Deno.readTextFileSync(config.importMap);
@@ -38,7 +40,9 @@ export default function webPlugin(config: Config = {}): Plugin {
     }, base);
   }
   log.debug("importMap:", importMap);
+
   const cache = new Map<string, string>();
+
   return {
     name: NAME_SPACE,
     setup(build) {
@@ -58,7 +62,6 @@ export default function webPlugin(config: Config = {}): Plugin {
           };
         },
       );
-
       importMap && build.onResolve(
         { filter: /.*/ },
         ({ path, importer }: OnResolveArgs) => {
@@ -80,17 +83,14 @@ export default function webPlugin(config: Config = {}): Plugin {
           }
         },
       );
-
       build.onResolve(
         { filter: /^https:\/\// },
         ({ path }: OnResolveArgs) => ({ path, namespace: NAME_SPACE }),
       );
-
       build.onResolve(
         { filter: /^http:\/\// },
         ({ path }: OnResolveArgs) => ({ path, namespace: NAME_SPACE }),
       );
-
       build.onResolve(
         { filter: /.*/, namespace: NAME_SPACE },
         ({ path, importer, namespace }: OnResolveArgs) => {
@@ -111,7 +111,6 @@ export default function webPlugin(config: Config = {}): Plugin {
                 };
               }
             }
-
             return;
           }
           log.debug("path:", path);

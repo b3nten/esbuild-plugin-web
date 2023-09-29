@@ -1,6 +1,6 @@
-# Dais
+# esbuild-plugin-web
 
-A minimal starter template for Deno libraries that can be converted and published to NPM. To use, clone and `rm -r .git`
+An Esbuild plugin that supports web features such as URL imports, import maps, and npm: specifiers.
 
 ## Scripts
 
