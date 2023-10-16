@@ -64,12 +64,12 @@ export default function webPlugin(config: Config = {}): Plugin {
       );
       importMap && build.onResolve(
         { filter: /.*/ },
-        ({ path, importer }: OnResolveArgs) => {
+        (args: OnResolveArgs) => {
           try {
             // base should either be working directory or the url of the importer.
-            const b = importer.startsWith("http") ? new URL(importer) : base;
+            const b = args.importer.startsWith("http") ? new URL(args.importer) : new URL(path.join(path.dirname(args.importer), args.path));
             const potentialResolve = resolveModuleSpecifier(
-              path,
+              args.path,
               importMap!,
               b,
             );
@@ -94,6 +94,7 @@ export default function webPlugin(config: Config = {}): Plugin {
       build.onResolve(
         { filter: /.*/, namespace: NAME_SPACE },
         ({ path, importer, namespace }: OnResolveArgs) => {
+          console.log("PAAAATH", path)
           // Check if the path is not from the same namespace or if it's not a relative or absolute path
           if (namespace !== NAME_SPACE || (path[0] !== "/" && path[0] !== ".")) {
             if (importMap) {

@@ -47,3 +47,5 @@ assertEquals(imp.default.sum(1, 2), 3)
 
 assertEquals(imp.default.snakecase("aCamelCasedVariable"), "a_camel_cased_variable")
 
+assertEquals(imp.default.folder, "folder")
+

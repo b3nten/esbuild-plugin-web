@@ -5,12 +5,15 @@ import { join } from "path"
 
 import snakecase from "npm:snakecase"
 
+import { folder } from "./folder/folder.ts"
+
 export default {
 	isEven,
 	isOdd,
 	sum,
 	join,
-	snakecase
+	snakecase, 
+	folder
 }
 
 
