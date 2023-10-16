@@ -135,7 +135,7 @@ export default function webPlugin(config: Config = {}): Plugin {
           cache.set(path, contents);
           log.debug("cached:", path);
           log.info("loaded", path)
-          return { contents, loader: "ts" };
+          return { contents, loader: "tsx" };
         },
       );
     },
