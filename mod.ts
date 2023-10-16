@@ -94,9 +94,8 @@ export default function webPlugin(config: Config = {}): Plugin {
       build.onResolve(
         { filter: /.*/, namespace: NAME_SPACE },
         ({ path, importer, namespace }: OnResolveArgs) => {
-          if (
-            namespace !== NAME_SPACE || (path[0] !== "/" && path[0] !== ".")
-          ) {
+          // Check if the path is not from the same namespace or if it's not a relative or absolute path
+          if (namespace !== NAME_SPACE || (path[0] !== "/" && path[0] !== ".")) {
             if (importMap) {
               const potentialResolve = resolveModuleSpecifier(
                 path,
@@ -113,9 +112,14 @@ export default function webPlugin(config: Config = {}): Plugin {
             }
             return;
           }
-          log.debug("path:", path);
+      
+          // Resolve the relative path
+          const newPath = path[0] === '.' ? new URL(path, new URL(importer, 'file://')).pathname : path;
+      
+          log.debug("resolved path:", newPath);
+      
           return {
-            path: new URL(path, importer).toString(),
+            path: newPath,
             namespace: NAME_SPACE,
           };
         },
